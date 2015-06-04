@@ -1,0 +1,136 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry} % to change the page dimensions
+\geometry{letterpaper} % letterpaper, a5paper, etc.
+\geometry{margin=1in} % change the size of the margins
+
+\usepackage{graphicx} % supports \includegraphics command
+%\usepackage{wrapfig}
+\graphicspath{ {images/} }
+
+%\usepackage{parskip}
+%\setlength{\parindent}{15pt}
+
+\usepackage{booktabs} % better looking tables
+\usepackage{array} % better arrays in math
+\usepackage{paralist} % flexible lists
+\usepackage{verbatim} % can add a comment block, better verbatim mode
+\usepackage{subfig} % can include more than one figure per figure section
+\usepackage[numbers,super,sort&compress]{natbib}
+%\usepackage[ampersand]{easylist}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{setspace}
+\usepackage{url}
+
+%opening
+\title{Multistate Bennett Acceptance Ratio}
+\author{Tyler P.}
+%\date{}
+
+%%% Headers and footers
+\usepackage{fancyhdr} % needs to be after 'geometry'
+\pagestyle{fancy} % options: empty, plain, fancy
+\renewcommand{\headrulewidth}{0pt} % can customize
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% Section title appearance
+%\usepackage{sectsty}
+%\allsectionsfont{\sffamily\mdseries\upshape}
+
+%%% ToC appearance
+%\usepackage[nottoc,notlof,notlot]{tocbibind} % put bibliography in ToC
+%\usepackage[titles,subfigure]{tocloft}
+%\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+%\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{abstract}
+	In order to better understand the re-weighting performed in MBAR free energy estimations, the math behind the method is re-derived here.
+\end{abstract}
+
+\section*{Definitions}
+\textbf{Partition function}
+
+$NVT =$ isometric, isothermal ensemble at fixed number of particles
+
+$Z_k =$ canonical partition function (normalization constant)
+
+$Z_n(x) =$ contribution to canonical partition function from one configuration
+
+$P_{n,k}(x) =$ probability of the $n$-th microstate occuring in state $k$
+
+$ A_k = F_k =$ (Helmholtz) free energy at a given $NVT$ state
+
+$k_B$ is the Boltzmann constant, $T$ is the thermodynamic temperature, and $\beta = k_B T$
+
+\begin{minipage}[b]{0.5\linewidth}
+	\[ Z_n(x) = \exp(-\beta E_k(x)) \]
+	\[ Z_k = \sum_{n=1}^{N} Z_n(x) \]
+\end{minipage}
+\begin{minipage}[b]{0.5\linewidth}
+	\[ P_{n,k}(x) = \frac{Z_n(x)}{Z_k} \]
+	\[ A_k = -k_B T \ln(Z_k) \]
+\end{minipage}
+
+where $x$ is a configuration and $n$ is its index,
+and $i$ is a state and $k$ is its index
+
+~\linebreak
+Note that if two configurations $x_n$ have the same energy $E_i(x_n)$, then the same value of $Z_n$ will occur twice, and provide the proper multiplicity for that energy.
+
+~\linebreak
+\textbf{Metropolis Monte Carlo}\cite{bennett}
+
+{ \hangindent=30pt
+$MC$ is short for Monte Carlo, a process by which an `event' is allowed to occur only a certain percentage of the time, where that percentage is evaluated by the algorithm in question
+}
+
+$M(x) =$ Metropolis function, where $x$ is an observable
+
+\[ M(x) = \min \{ 1, \exp(-x) \} \]
+
+\section*{Derivation}
+
+By rearrangement of the canonical variables, we can show that the probability of a microstate\cite{wikiCPF} is given as
+\begin{minipage}[b]{0.32\linewidth}
+	\[ F_k = -k_B T \ln(Z_k) \]
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.32\linewidth}
+	\[ \ln(Z_k) = -\frac{F_k}{k_B T}  \]
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.32\linewidth}
+	\[ Z_k = \exp \left( \frac{-F_k}{k_B T} \right) \]
+\end{minipage}
+\[ P_{n,k} = \frac{Z_n(x)}{\exp (-F_k/k_B T)} = \frac{\exp(-\beta E_k(x))}{\exp (-F_k/k_B T)} = \exp\left(\frac{-E_k(x)}{k_B T}\right) \exp \left( \frac{F_k}{k_B T} \right) = \exp\left(\frac{F_k-E_k(x)}{k_B T} \right), \]
+such that the canonical partition function itself is no longer in the expression. Since probabilities must sum to one when normalized, we gain the following definition:
+\[ 1 = \sum_{n=1}^{N} P_{n,k} = \sum_{n=1}^{N} \exp(\beta F_k - \beta E_k(x)) = \exp(\beta F_k) \sum_{n=1}^{N} \exp(- \beta E_k(x)) \]
+\[ \exp(-\beta F_k) = \sum_{n=1}^{N} \exp(- \beta E_k(x)). \]
+\[ F_k = -\frac{1}{\beta} \ln \left( \sum_{n=1}^{N} \exp(- \beta E_k(x)) \right), \]
+which is consistent with direct substitution of the canonical variables into the free energy expression.
+
+\begin{thebibliography}{9}
+	\bibitem{bennett}
+		Bennett, C. H.,
+		(1976),
+		Efficient Estimation of Free Energy differences from Monte Carlo Data.,
+		\emph{J. Comput. Phys.},
+		22, 
+		245–268.
+	\bibitem{wikiCPF}
+		Wikipedia,
+		Canonical ensemble --- Wikipedia{,} The Free Encyclopedia,
+		2015,
+		\url{http://en.wikipedia.org/w/index.php?title=Canonical_ensemble&oldid=659866755},
+		[Online; accessed 3-June-2015]
+\end{thebibliography}
+
+\end{document}
