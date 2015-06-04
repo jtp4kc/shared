@@ -83,7 +83,7 @@ where $x$ is a configuration and $n$ is its index,
 and $i$ is a state and $k$ is its index
 
 ~\linebreak
-Note that if two configurations $x_n$ have the same energy $E_i(x_n)$, then the same value of $Z_n$ will occur twice, and provide the proper multiplicity for that energy.
+Note that if two configurations $x_n$ have the same energy $E_k(x_n)$, then the same value of $Z_n$ will occur twice, and provide the proper multiplicity for that energy.
 
 ~\linebreak
 \textbf{Metropolis Monte Carlo}\cite{bennett}
@@ -92,6 +92,14 @@ $MC$ is short for Monte Carlo, a process by which an `event' is allowed to occur
 
 $M(x) =$ Metropolis function, where $x$ is an observable
 
+$\vec{q} = {<}q_1, q_2, ... q_N{>} =$ configurational degrees of freedom
+
+$\Phi_x =$ configurational potential energy, and $K_x =$ momenta kinetic energy
+
+$U_k(\vec{q}) = (E(x) - K_x)/k_B T = \beta \Phi_x$, reduced potential energy, as a function of configuration space
+
+$Q_k = \int \exp(-U_k(\vec{q}))~d\vec{q}$, potential energy portion of the canonical partition function
+
 \[ M(x) = \min \{ 1, \exp(-x) \} \]
 \[ M(-x) = \min \{ 1, \exp(x) \} = 1/ \max \{ 1, \exp(-x) \} \]
 \[ \frac{M(x)}{M(-x)} = \min \{ 1, \exp(-x) \} \max \{ 1, \exp(-x) \}  = \exp(-x) \]
@@ -99,10 +107,9 @@ $M(x) =$ Metropolis function, where $x$ is an observable
 because one of either $\min$ or $\max$ will always yield $1$, and the other will resultingly give $\exp(-x)$.
 
 ~\linebreak
-Bennett uses this fact about the Metropolis function to ratio potential functions, which results in a straightforward potential difference (the free energy difference).
+Bennett uses this property of the Metropolis function to relate it to canonical potential functions (and their distributions $\exp(-U)$).
 
-\[ \frac{M(U_1 - U_0)}{M(U_0 - U_1)} = \exp(U_1 - U_0) \]
-\[ M(U_1 - U_0)~\exp(-U_0) = M(U_0 - U_1)~\exp(-U_1) \]
+\[ \frac{M(U_1 - U_0)}{M(U_0 - U_1)} = \exp(U_0 - U_1) \]
 
 \section*{Derivation}
 
@@ -124,6 +131,32 @@ such that the canonical partition function itself is no longer in the expression
 \[ \exp(-\beta F_k) = \sum_{n=1}^{N} \exp(- \beta E_k(x)). \]
 \[ F_k = -\frac{1}{\beta} \ln \left( \sum_{n=1}^{N} \exp(- \beta E_k(x)) \right), \]
 which is consistent with direct substitution of the canonical variables into the free energy expression.
+
+Using the property of Metropolis functions, Bennett constructs the following line of relations\cite{bennett}:
+
+\[ M(U_1 - U_0)~\exp(-U_0) = M(U_0 - U_1)~\exp(-U_1) \]
+\[ \frac{Q_0}{Q_0} M(U_1 - U_0)~\exp(-U_0) = M(U_0 - U_1)~\exp(-U_1) \frac{Q_1}{Q_1} \]
+\[ \int Q_0  \frac{M(U_1 - U_0)~\exp(-U_0)}{Q_0} d\vec{q} ~ = \int Q_1 \frac{M(U_0 - U_1)~\exp(-U_1)}{Q_1} d\vec{q} \]
+\[ Q_0~\langle M(U_1 - U_0) \rangle_0 = Q_1~\langle M(U_0 - U_1) \rangle_1 \]
+\[ \frac{Q_0}{Q_1} = \frac{\langle M(U_0 - U_1) \rangle_1}{\langle M(U_1 - U_0) \rangle_0} \]
+
+or, more generally,
+\[ \frac{Q_0}{Q_1} = \frac{Q_0 \int W \exp(-U_1 - U_0) d\vec{q}}{Q_1 \int W \exp(-U_0 - U_1) d\vec{q}} = \frac{\langle W \exp(-U_0) \rangle_1}{\langle W \exp(-U_1) \rangle_0} \]
+
+where $W$ is a weighting function.
+
+~\linebreak
+Here we address the free energy difference, which is found as
+
+\begin{minipage}[b]{0.45\linewidth}
+	\[ F_0 = -k_B T \ln(Q_0 Q_{KE} ) \]
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\linewidth}
+	\[ F_1 = -k_B T \ln(Q_1 Q_{KE} ) \]
+\end{minipage}
+
+\[ \Delta F_{est} = F_1 - F_0 = k_B T \ln \left( \frac{Q_0 Q_{KE}}{Q_1 Q_{KE}} \right) = k_B T \ln \left( \frac{Q_0}{Q_1} \right) \]
 
 \begin{thebibliography}{9}
 	\bibitem{bennett}
