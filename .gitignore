@@ -1,0 +1,4 @@
+*.aux
+mbar.log
+*.pdf
+*.gz

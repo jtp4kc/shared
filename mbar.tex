@@ -88,13 +88,21 @@ Note that if two configurations $x_n$ have the same energy $E_i(x_n)$, then the 
 ~\linebreak
 \textbf{Metropolis Monte Carlo}\cite{bennett}
 
-{ \hangindent=30pt
 $MC$ is short for Monte Carlo, a process by which an `event' is allowed to occur only a certain percentage of the time, where that percentage is evaluated by the algorithm in question
-}
 
 $M(x) =$ Metropolis function, where $x$ is an observable
 
 \[ M(x) = \min \{ 1, \exp(-x) \} \]
+\[ M(-x) = \min \{ 1, \exp(x) \} = 1/ \max \{ 1, \exp(-x) \} \]
+\[ \frac{M(x)}{M(-x)} = \min \{ 1, \exp(-x) \} \max \{ 1, \exp(-x) \}  = \exp(-x) \]
+
+because one of either $\min$ or $\max$ will always yield $1$, and the other will resultingly give $\exp(-x)$.
+
+~\linebreak
+Bennett uses this fact about the Metropolis function to ratio potential functions, which results in a straightforward potential difference (the free energy difference).
+
+\[ \frac{M(U_1 - U_0)}{M(U_0 - U_1)} = \exp(U_1 - U_0) \]
+\[ M(U_1 - U_0)~\exp(-U_0) = M(U_0 - U_1)~\exp(-U_1) \]
 
 \section*{Derivation}
 
