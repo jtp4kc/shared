@@ -66,7 +66,9 @@ $Z_n(x) =$ contribution to canonical partition function from one configuration
 
 $P_{n,k}(x) =$ probability of the $n$-th microstate occuring in state $k$
 
-$ A_k = F_k =$ (Helmholtz) free energy at a given $NVT$ state
+$ A_k =$ (Helmholtz) free energy at a given $NVT$ state
+
+$ F_k = \beta A_k$, the reduced free energy
 
 $k_B$ is the Boltzmann constant, $T$ is the thermodynamic temperature, and $\beta = k_B T$
 
@@ -111,27 +113,34 @@ Bennett uses this property of the Metropolis function to relate it to canonical 
 
 \[ \frac{M(U_1 - U_0)}{M(U_0 - U_1)} = \exp(U_0 - U_1) \]
 
+~\linebreak
+\textbf{Bennett Acceptance Ratio}\cite{bennett}
+
+$f(x) = (1 + exp(x))^{-1}$, the Fermi distribution function
+
 \section*{Derivation}
 
 By rearrangement of the canonical variables, we can show that the probability of a microstate\cite{wikiCPF} is given as
 \begin{minipage}[b]{0.32\linewidth}
-	\[ F_k = -k_B T \ln(Z_k) \]
+	\[ A_k = -k_B T \ln(Z_k) \]
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.32\linewidth}
-	\[ \ln(Z_k) = -\frac{F_k}{k_B T}  \]
+	\[ \ln(Z_k) = -\frac{A_k}{k_B T} = -F_k \]
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.32\linewidth}
-	\[ Z_k = \exp \left( \frac{-F_k}{k_B T} \right) \]
+	\[ Z_k = \exp \left( \frac{-A_k}{k_B T} \right) \]
 \end{minipage}
-\[ P_{n,k} = \frac{Z_n(x)}{\exp (-F_k/k_B T)} = \frac{\exp(-\beta E_k(x))}{\exp (-F_k/k_B T)} = \exp\left(\frac{-E_k(x)}{k_B T}\right) \exp \left( \frac{F_k}{k_B T} \right) = \exp\left(\frac{F_k-E_k(x)}{k_B T} \right), \]
+\[ P_{n,k} = \frac{Z_n(x)}{\exp (-A_k/k_B T)} = \frac{\exp(-\beta E_k(x))}{\exp (-A_k/k_B T)} = \exp\left(\frac{-E_k(x)}{k_B T}\right) \exp \left( \frac{A_k}{k_B T} \right) = \exp\left(\frac{A_k-E_k(x)}{k_B T} \right), \]
 such that the canonical partition function itself is no longer in the expression. Since probabilities must sum to one when normalized, we gain the following definition:
-\[ 1 = \sum_{n=1}^{N} P_{n,k} = \sum_{n=1}^{N} \exp(\beta F_k - \beta E_k(x)) = \exp(\beta F_k) \sum_{n=1}^{N} \exp(- \beta E_k(x)) \]
-\[ \exp(-\beta F_k) = \sum_{n=1}^{N} \exp(- \beta E_k(x)). \]
-\[ F_k = -\frac{1}{\beta} \ln \left( \sum_{n=1}^{N} \exp(- \beta E_k(x)) \right), \]
+\[ 1 = \sum_{n=1}^{N} P_{n,k} = \sum_{n=1}^{N} \exp(\beta A_k - \beta E_k(x)) = \exp(\beta A_k) \sum_{n=1}^{N} \exp(- \beta E_k(x)) \]
+\[ \exp(-\beta A_k) = \sum_{n=1}^{N} \exp(- \beta E_k(x)). \]
+\[ A_k = -\frac{1}{\beta} \ln \left( \sum_{n=1}^{N} \exp(- \beta E_k(x)) \right), \]
+
 which is consistent with direct substitution of the canonical variables into the free energy expression.
 
+~\linebreak
 Using the property of Metropolis functions, Bennett constructs the following line of relations\cite{bennett}:
 
 \[ M(U_1 - U_0)~\exp(-U_0) = M(U_0 - U_1)~\exp(-U_1) \]
@@ -149,14 +158,16 @@ where $W$ is a weighting function.
 Here we address the free energy difference, which is found as
 
 \begin{minipage}[b]{0.45\linewidth}
-	\[ F_0 = -k_B T \ln(Q_0 Q_{KE} ) \]
+	\[ F_0 = - \ln(Q_0 Q_{KE} ) \]
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.45\linewidth}
-	\[ F_1 = -k_B T \ln(Q_1 Q_{KE} ) \]
+	\[ F_1 = - \ln(Q_1 Q_{KE} ) \]
 \end{minipage}
 
-\[ \Delta F_{est} = F_1 - F_0 = k_B T \ln \left( \frac{Q_0 Q_{KE}}{Q_1 Q_{KE}} \right) = k_B T \ln \left( \frac{Q_0}{Q_1} \right) \]
+\[ \Delta F_{est} = F_1 - F_0 = \ln \left( \frac{Q_0 Q_{KE}}{Q_1 Q_{KE}} \right) = \ln \left( \frac{Q_0}{Q_1} \right). \]
+
+We assume that the kinetic partition functions are equal and therefore cancel.
 
 \begin{thebibliography}{9}
 	\bibitem{bennett}
